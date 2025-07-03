@@ -94,6 +94,3 @@ Press ENTER to return to the menu...
 
 ## Contributing
 Feel free to submit issues or pull requests to improve the script, such as adding error handling, support for other operating systems, or additional features.
-
-## License
-This project is licensed under the MIT License.
