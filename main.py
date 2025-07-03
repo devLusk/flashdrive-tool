@@ -55,6 +55,13 @@ def format_flashdrive():
     subprocess.run(f'sudo parted -s {disk} mklabel msdos', shell=True)
     print("Partition table created")
 
+    # Volumn format options
+    print(f"\nSelect the volumn format:")
+    print("1) FAT32 - high compatibility")
+    print("2) NTFS - Otimizated for Windows")
+    print("3) EXT4 - LInux sistem")
+    volumn_option = input("Choose an option: ")
+
 def create_bootable():
     # TODO: This feature is not implemented yet.
     input("Press ENTER to return to the menu...")
