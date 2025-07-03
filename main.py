@@ -1,12 +1,14 @@
 import subprocess
 
 def list_devices():
-    print("Detected disks and partitions:")
+    print("\nDetected disks and partitions:")
     subprocess.run('lsblk -o NAME,SIZE,TYPE,MOUNTPOINT | grep -E "disk|part"', shell=True)
 
 def format_flashdrive():
     list_devices()
-    disk_raw = input("Enter the disk identifier (e.g. sda): ")
+
+    # Ask the user for the disk identifier (e.g., sda)
+    disk_raw = input(f"\nEnter the disk identifier (e.g. sda): ")
 
     if not disk_raw:
         print("Error: no device specified.")
@@ -15,13 +17,28 @@ def format_flashdrive():
 
     disk = f"/dev/{disk_raw}"
     print(f"Selected device: {disk}")
+    
+    # Ask the user for the partition number
+    partition_raw = input(f"\nEnter the partition number: ")
+    partition = f"{disk}{partition_raw}"
+    print(f"Selected partition: {partition}")
 
-    label_name = input("Set volume label (default: USB_Drive): ")
+    # Ask the user to set a volume label
+    label_name = input(f"\nSet volume label (default: USB_Drive): ")
     if not label_name:
         label_name = "USB_Drive"
 
     print(f"Volume label set to: {label_name}")
 
+    # Ask the user for confirmation
+    print(f"\nWarning: all data on {disk} will be deleted.")
+    confirmation = input("To continue, confirm typing 'YES': ")
+    if confirmation not in ("yes", "YES"):
+        print("Canceled...")
+        input("Press ENTER to return to the menu...")
+        return
+    
+    print(f"\nConfirmation received")
 
 def create_bootable():
     # TODO: This feature is not implemented yet.
