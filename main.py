@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 def list_devices():
     print("\nDetected disks and partitions:")
@@ -61,6 +62,33 @@ def format_flashdrive():
     print("2) NTFS - Optimized for Windows")
     print("3) EXT4 - Linux system")
     volume_option = input("Choose an option: ")
+
+    match volume_option:
+        case "1":
+            print("Partitioning for FAT32 system...")
+            subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary fat32 0% 100%', shell=True)
+            time.sleep(2)
+            print(f"Formatting to FAT32 with the label: {label_name}")
+            subprocess.run(f'sudo mkfs.vfat -F 32 -n {label_name} {partition}', shell=True)
+        case "2":
+            print("Partitioning for NTFS system...")
+            subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary ntfs 0% 100%', shell=True)
+            time.sleep(2)
+            print(f"Formatting to NTFS with the label: {label_name}")
+            subprocess.run(f'sudo mkfs.ntfs -f -L {label_name} {partition}', shell=True)
+        case "3":
+            print("Partitioning for EXT4 system...")
+            subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary ext4 0% 100%', shell=True)
+            time.sleep(2)
+            print(f"Formatting to EXT4 with the label: {label_name}")
+            subprocess.run(f'sudo mkfs.ext4 -L {label_name} {partition}', shell=True)
+        case _:
+            print("Invalid format option selected.")
+            input("Press ENTER to return to the menu...")
+            return
+
+    print(f"\nFormatting complete. Volume named {label_name}.")
+    input("Press ENTER to return to the menu...")
 
 def create_bootable():
     # TODO: This feature is not implemented yet.
