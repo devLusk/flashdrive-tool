@@ -50,6 +50,11 @@ def format_flashdrive():
     subprocess.run(f'sudo wipefs -a {disk}', shell=True)
     print("Old data deleted")
 
+    # New partition table
+    print(f"\nDefining new partition table (msdos)...")
+    subprocess.run(f'sudo parted -s {disk} mklabel msdos', shell=True)
+    print("Partition table created")
+
 def create_bootable():
     # TODO: This feature is not implemented yet.
     input("Press ENTER to return to the menu...")
