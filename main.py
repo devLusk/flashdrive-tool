@@ -40,6 +40,16 @@ def format_flashdrive():
     
     print(f"\nConfirmation received")
 
+    # Umount partition
+    print(f"\nTrying to umount the partition (if in use)...")
+    subprocess.run(f'sudo umount {partition} 2>/dev/null', shell=True)
+    print("Partition umounted (if mounted)")
+
+    # Deleting data
+    print(f"\nDeleting old subscriptions and data...")
+    subprocess.run(f'sudo wipefs -a {disk}', shell=True)
+    print("Old data deleted")
+
 def create_bootable():
     # TODO: This feature is not implemented yet.
     input("Press ENTER to return to the menu...")
