@@ -24,7 +24,7 @@ def format_flashdrive():
     print(f"Selected partition: {partition}")
 
     # Ask the user to set a volume label
-    label_name = input(f"\nSet volume label (default: USB_Drive): ")
+    label_name = input(f"\nEnter volume label (default: USB_Drive): ")
     if not label_name:
         label_name = "USB_Drive"
 
@@ -32,7 +32,7 @@ def format_flashdrive():
 
     # Ask the user for confirmation
     print(f"\nWarning: all data on {disk} will be deleted.")
-    confirmation = input("To continue, confirm typing 'YES': ")
+    confirmation = input("To proceed, type 'YES' to confirm: ")
     if confirmation not in ("yes", "YES"):
         print("Canceled...")
         input("Press ENTER to return to the menu...")
@@ -41,12 +41,12 @@ def format_flashdrive():
     print(f"\nConfirmation received")
 
     # Umount partition
-    print(f"\nTrying to umount the partition (if in use)...")
+    print(f"\nTrying to unmount the partition (if in use)...")
     subprocess.run(f'sudo umount {partition} 2>/dev/null', shell=True)
-    print("Partition umounted (if mounted)")
+    print("Partition unmounted (if it was mounted)")
 
     # Deleting data
-    print(f"\nDeleting old subscriptions and data...")
+    print(f"\nDeleting old data and signatures...")
     subprocess.run(f'sudo wipefs -a {disk}', shell=True)
     print("Old data deleted")
 
@@ -55,12 +55,12 @@ def format_flashdrive():
     subprocess.run(f'sudo parted -s {disk} mklabel msdos', shell=True)
     print("Partition table created")
 
-    # Volumn format options
-    print(f"\nSelect the volumn format:")
-    print("1) FAT32 - high compatibility")
-    print("2) NTFS - Otimizated for Windows")
-    print("3) EXT4 - LInux sistem")
-    volumn_option = input("Choose an option: ")
+    # Volume format options
+    print(f"\nSelect the volume format:")
+    print("1) FAT32 - High compatibility")
+    print("2) NTFS - Optimized for Windows")
+    print("3) EXT4 - Linux system")
+    volume_option = input("Choose an option: ")
 
 def create_bootable():
     # TODO: This feature is not implemented yet.
