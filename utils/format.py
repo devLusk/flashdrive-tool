@@ -6,9 +6,9 @@ def format_flashdrive():
 
     app = ctk.CTk()
     app.title("FORMAT FLASH DRIVE")
-    app.geometry("500x350")
+    app.geometry("500x460")
     app.maxsize(width=600, height=350)
-    app.minsize(width=500, height=350)
+    app.minsize(width=500, height=460)
 
     # UI Widgets
     ctk.CTkLabel(app, text="FORMAT MENU", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=10)
@@ -19,35 +19,42 @@ def format_flashdrive():
     format_frame.columnconfigure(0, weight=1)
     format_frame.columnconfigure(1, weight=1)
 
-    # DISK ENTRY
+    # DISK IDENTIFIER
     ctk.CTkLabel(format_frame, text="DISK IDENTIFIER:").grid(row=0, column=0, padx=20, pady=5)
     disk_entry = ctk.CTkEntry(format_frame, placeholder_text="E.G. SDA")
     disk_entry.grid(row=1, column=0, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # PARTITION ENTRY
+    # PARTITION NUMBER
     ctk.CTkLabel(format_frame, text="PARTITION NUMBER:").grid(row=0, column=1, padx=20, pady=5)
     partition_entry = ctk.CTkEntry(format_frame, placeholder_text="E.G. 1")
     partition_entry.grid(row=1, column=1, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # LABEL ENTRY
+    # VOLUME LABEL
     ctk.CTkLabel(format_frame, text="VOLUME LABEL:").grid(row=2, column=0, padx=20, pady=5)
     label_entry = ctk.CTkEntry(format_frame, placeholder_text="DEFAULT: USB_DRIVE")
     label_entry.grid(row=3, column=0, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # FORMAT VOLUME ENTRY
+    # FORMAT OPTION
     ctk.CTkLabel(format_frame, text="FORMAT OPTION:").grid(row=2, column=1, padx=20, pady=5)
     format_volume = ctk.CTkComboBox(format_frame, values=["FAT32", "NTFS", "EXT4"])
     format_volume.set("FAT32")
-    format_volume.grid(row=3, column=1, padx=20, pady=5, ipadx=10, ipady=5, sticky="ew")
+    format_volume.grid(row=3, column=1, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # CONFIRM ENTRY
+    # CONFIRMATION
     ctk.CTkLabel(format_frame, text="CONFIRMATION:").grid(row=4, column=0, columnspan=2, padx=20, pady=5)
     confirm_entry = ctk.CTkEntry(format_frame, placeholder_text="TYPE YES")
-    confirm_entry.grid(row=5, column=0, columnspan=2, padx=20, pady=5, ipadx=10, ipady=5, sticky="ew")
+    confirm_entry.grid(row=5, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # TODO: BUTTON START E LIST DEVICES
+    # ACTION BUTTONS
+    start_button = ctk.CTkButton(format_frame, text="START")
+    start_button.grid(row=6, column=0, columnspan=2, padx=20, pady=10, ipadx=10, ipady=5, sticky="ew")
+
+    devices_button = ctk.CTkButton(format_frame, text="LIST DEVICES")
+    devices_button.grid(row=7, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
 
     # TODO: OUTPUT_LABEL
+    output_frame = ctk.CTkFrame(app)
+    output_frame.pack(fill="x", padx=20, pady=10, ipady=10)
 
     app.mainloop()
 
