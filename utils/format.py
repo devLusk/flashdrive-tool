@@ -40,7 +40,10 @@ def format_flashdrive():
     format_volume.set("FAT32")
     format_volume.grid(row=3, column=1, padx=20, pady=5, ipadx=10, ipady=5, sticky="ew")
 
-    # TODO: CONFIRM ENTRY
+    # CONFIRM ENTRY
+    ctk.CTkLabel(format_frame, text="CONFIRMATION:").grid(row=4, column=0, columnspan=2, padx=20, pady=5)
+    confirm_entry = ctk.CTkEntry(format_frame, placeholder_text="TYPE YES")
+    confirm_entry.grid(row=5, column=0, columnspan=2, padx=20, pady=5, ipadx=10, ipady=5, sticky="ew")
 
     # TODO: BUTTON START E LIST DEVICES
 
