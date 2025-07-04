@@ -1,8 +1,5 @@
-import subprocess
-import time
 import customtkinter as ctk
 
-from utils.devices import list_devices
 
 def format_flashdrive():
     ctk.set_appearance_mode("system")
@@ -33,9 +30,21 @@ def format_flashdrive():
     partition_entry.grid(row=1, column=1, padx=20, ipadx=10, ipady=5, sticky="ew")
 
     # LABEL ENTRY
-    ctk.CTkLabel(format_frame, text="VOLUME LABEL:").grid(row=2, column=0, columnspan=2, padx=20, pady=5)
+    ctk.CTkLabel(format_frame, text="VOLUME LABEL:").grid(row=2, column=0, padx=20, pady=5)
     label_entry = ctk.CTkEntry(format_frame, placeholder_text="DEFAULT: USB_DRIVE")
-    label_entry.grid(row=3, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
+    label_entry.grid(row=3, column=0, padx=20, ipadx=10, ipady=5, sticky="ew")
+
+    # FORMAT VOLUME ENTRY
+    ctk.CTkLabel(format_frame, text="FORMAT OPTION:").grid(row=2, column=1, padx=20, pady=5)
+    format_volume = ctk.CTkComboBox(format_frame, values=["FAT32", "NTFS", "EXT4"])
+    format_volume.set("FAT32")
+    format_volume.grid(row=3, column=1, padx=20, pady=5, ipadx=10, ipady=5, sticky="ew")
+
+    # TODO: CONFIRM ENTRY
+
+    # TODO: BUTTON START E LIST DEVICES
+
+    # TODO: OUTPUT_LABEL
 
     app.mainloop()
 
