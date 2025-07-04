@@ -8,12 +8,36 @@ def format_flashdrive():
     ctk.set_appearance_mode("system")
 
     app = ctk.CTk()
-    app.title("Format Flash Drive")
+    app.title("FORMAT FLASH DRIVE")
     app.geometry("500x350")
     app.maxsize(width=600, height=350)
     app.minsize(width=500, height=350)
 
     # UI Widgets
+    ctk.CTkLabel(app, text="FORMAT MENU", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=10)
+
+    format_frame = ctk.CTkFrame(app)
+    format_frame.pack(fill="x", padx=20, ipady=10)
+
+    format_frame.columnconfigure(0, weight=1)
+    format_frame.columnconfigure(1, weight=1)
+
+    # DISK ENTRY
+    ctk.CTkLabel(format_frame, text="DISK IDENTIFIER:").grid(row=0, column=0, padx=20, pady=5)
+    disk_entry = ctk.CTkEntry(format_frame, placeholder_text="E.G. SDA")
+    disk_entry.grid(row=1, column=0, padx=20, ipadx=10, ipady=5, sticky="ew")
+
+    # PARTITION ENTRY
+    ctk.CTkLabel(format_frame, text="PARTITION NUMBER:").grid(row=0, column=1, padx=20, pady=5)
+    partition_entry = ctk.CTkEntry(format_frame, placeholder_text="E.G. 1")
+    partition_entry.grid(row=1, column=1, padx=20, ipadx=10, ipady=5, sticky="ew")
+
+    # LABEL ENTRY
+    ctk.CTkLabel(format_frame, text="VOLUME LABEL:").grid(row=2, column=0, columnspan=2, padx=20, pady=5)
+    label_entry = ctk.CTkEntry(format_frame, placeholder_text="DEFAULT: USB_DRIVE")
+    label_entry.grid(row=3, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
+
+    app.mainloop()
 
     # list_devices()
     #
