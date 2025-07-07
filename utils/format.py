@@ -10,6 +10,33 @@ def format_flashdrive():
     app.maxsize(width=600, height=350)
     app.minsize(width=500, height=460)
 
+    def on_format_click():
+        disk = disk_entry.get().lower()
+        partition = partition_entry.get().lower()
+        label = label_entry.get().lower()
+        volume = format_volume.get().lower()
+        confirmation = confirm_entry.get().lower()
+
+        if not disk:
+            output_label.configure(
+                text="Error: no disk specified.",
+                text_color="red"
+            )
+            return
+        
+        if not label:
+            label = "USB_Drive"
+
+        if confirmation != "yes":
+            output_label.configure(
+                text="Canceled...",
+                text_color="red"
+            )
+            return
+        
+        disk = f"/dev/{disk}"
+        partition = f"{disk}{partition}"
+        
     # UI Widgets
     ctk.CTkLabel(app, text="FORMAT MENU", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=10)
 
@@ -46,15 +73,18 @@ def format_flashdrive():
     confirm_entry.grid(row=5, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
 
     # ACTION BUTTONS
-    start_button = ctk.CTkButton(format_frame, text="START")
+    start_button = ctk.CTkButton(format_frame, text="START", command=on_format_click)
     start_button.grid(row=6, column=0, columnspan=2, padx=20, pady=10, ipadx=10, ipady=5, sticky="ew")
 
     devices_button = ctk.CTkButton(format_frame, text="LIST DEVICES")
     devices_button.grid(row=7, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # TODO: OUTPUT_LABEL
+    # OUTPUT LABEL
     output_frame = ctk.CTkFrame(app)
     output_frame.pack(fill="x", padx=20, pady=10, ipady=10)
+
+    output_label = ctk.CTkLabel(output_frame, text="Status: Waiting...")
+    output_label.pack(pady=10)
 
     app.mainloop()
 
