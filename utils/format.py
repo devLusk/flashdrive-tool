@@ -1,5 +1,5 @@
 import customtkinter as ctk
-
+import subprocess
 
 def format_flashdrive():
     ctk.set_appearance_mode("system")
@@ -13,161 +13,98 @@ def format_flashdrive():
     def on_format_click():
         disk = disk_entry.get().lower()
         partition = partition_entry.get().lower()
-        label = label_entry.get().lower()
+        label = label_entry.get()
         volume = format_volume.get().lower()
         confirmation = confirm_entry.get().lower()
 
         if not disk:
-            output_label.configure(
-                text="Error: no disk specified.",
-                text_color="red"
-            )
+            output_label.configure(text="Error: Please specify a disk.", text_color="red")
             return
         
         if not label:
             label = "USB_Drive"
 
         if confirmation != "yes":
-            output_label.configure(
-                text="Canceled...",
-                text_color="red"
-            )
+            output_label.configure(text="Operation cancelled by user.", text_color="red")
             return
         
         disk = f"/dev/{disk}"
         partition = f"{disk}{partition}"
-        
-    # UI Widgets
-    ctk.CTkLabel(app, text="FORMAT MENU", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=10)
 
+        try:
+            output_label.configure(text="Preparing to format...", text_color="green")
+
+            subprocess.run(f'sudo umount {partition}', shell=True)
+            subprocess.run(f'sudo wipefs -a {disk}', shell=True)
+            subprocess.run(f'sudo parted -s {disk} mklabel msdos', shell=True)
+
+            if volume == "fat32":
+                subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary fat32 0% 100%', shell=True)
+                subprocess.run(f'sudo mkfs.vfat -F 32 -n {label} {partition}', shell=True)
+            elif volume == "ntfs":
+                subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary ntfs 0% 100%', shell=True)
+                subprocess.run(f'sudo mkfs.ntfs -f -L {label} {partition}', shell=True)
+            elif volume == "ext4":
+                subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary ext4 0% 100%', shell=True)
+                subprocess.run(f'sudo mkfs.ext4 -L {label} {partition}', shell=True)
+
+            output_label.configure(text="Formatting complete.", text_color="green")
+
+        except subprocess.CalledProcessError as e:
+            output_label.configure(text=f"Command failed: {e}", text_color="red")
+        except Exception as e:
+            output_label.configure(text=f"Unexpected error: {e}", text_color="red")
+
+    # UI Widgets
+    ctk.CTkLabel(app, text="Flash Drive Formatter", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=10)
+
+    # Create input frame
     format_frame = ctk.CTkFrame(app)
     format_frame.pack(fill="x", padx=20, ipady=10)
-
     format_frame.columnconfigure(0, weight=1)
     format_frame.columnconfigure(1, weight=1)
 
-    # DISK IDENTIFIER
-    ctk.CTkLabel(format_frame, text="DISK IDENTIFIER:").grid(row=0, column=0, padx=20, pady=5)
-    disk_entry = ctk.CTkEntry(format_frame, placeholder_text="E.G. SDA")
+    # Disk Identifier
+    ctk.CTkLabel(format_frame, text="Disk Identifier (e.g., sda):").grid(row=0, column=0, padx=20, pady=5)
+    disk_entry = ctk.CTkEntry(format_frame, placeholder_text="Example: sda")
     disk_entry.grid(row=1, column=0, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # PARTITION NUMBER
-    ctk.CTkLabel(format_frame, text="PARTITION NUMBER:").grid(row=0, column=1, padx=20, pady=5)
+    # Partition Number
+    ctk.CTkLabel(format_frame, text="Partition Number (e.g., 1):").grid(row=0, column=1, padx=20, pady=5)
     partition_entry = ctk.CTkEntry(format_frame, placeholder_text="E.G. 1")
     partition_entry.grid(row=1, column=1, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # VOLUME LABEL
-    ctk.CTkLabel(format_frame, text="VOLUME LABEL:").grid(row=2, column=0, padx=20, pady=5)
-    label_entry = ctk.CTkEntry(format_frame, placeholder_text="DEFAULT: USB_DRIVE")
+    # Volume Label
+    ctk.CTkLabel(format_frame, text="Volume Label (optional):").grid(row=2, column=0, padx=20, pady=5)
+    label_entry = ctk.CTkEntry(format_frame, placeholder_text="Default: USB_Drive")
     label_entry.grid(row=3, column=0, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # FORMAT OPTION
-    ctk.CTkLabel(format_frame, text="FORMAT OPTION:").grid(row=2, column=1, padx=20, pady=5)
+    # File System Option
+    ctk.CTkLabel(format_frame, text="File System:").grid(row=2, column=1, padx=20, pady=5)
     format_volume = ctk.CTkComboBox(format_frame, values=["FAT32", "NTFS", "EXT4"])
     format_volume.set("FAT32")
     format_volume.grid(row=3, column=1, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # CONFIRMATION
-    ctk.CTkLabel(format_frame, text="CONFIRMATION:").grid(row=4, column=0, columnspan=2, padx=20, pady=5)
-    confirm_entry = ctk.CTkEntry(format_frame, placeholder_text="TYPE YES")
+    # Confirmation
+    ctk.CTkLabel(format_frame, text="Confirmation (type YES to proceed):").grid(row=4, column=0, columnspan=2, padx=20, pady=5)
+    confirm_entry = ctk.CTkEntry(format_frame, placeholder_text="Type YES to confirm")
     confirm_entry.grid(row=5, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # ACTION BUTTONS
-    start_button = ctk.CTkButton(format_frame, text="START", command=on_format_click)
+    # Action Buttons
+    start_button = ctk.CTkButton(format_frame, text="Format Drive", command=on_format_click)
     start_button.grid(row=6, column=0, columnspan=2, padx=20, pady=10, ipadx=10, ipady=5, sticky="ew")
 
-    devices_button = ctk.CTkButton(format_frame, text="LIST DEVICES")
+    devices_button = ctk.CTkButton(format_frame, text="Show Available Disks")
     devices_button.grid(row=7, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
 
-    # OUTPUT LABEL
+    # Output Frame
     output_frame = ctk.CTkFrame(app)
     output_frame.pack(fill="x", padx=20, pady=10, ipady=10)
 
-    output_label = ctk.CTkLabel(output_frame, text="Status: Waiting...")
+    output_label = ctk.CTkLabel(output_frame, text="Status: Waiting for user input...")
     output_label.pack(pady=10)
 
     app.mainloop()
 
-    # list_devices()
-    #
-    # # Ask the user for the disk identifier (e.g., sda)
-    # disk_raw = input(f"\nEnter the disk identifier (e.g. sda): ")
-    #
-    # if not disk_raw:
-    #     print("Error: no device specified.")
-    #     input("Press ENTER to return to the menu...")
-    #     return
-    #
-    # disk = f"/dev/{disk_raw}"
-    # print(f"Selected device: {disk}")
-    #
-    # # Ask the user for the partition number
-    # partition_raw = input(f"\nEnter the partition number: ")
-    # partition = f"{disk}{partition_raw}"
-    # print(f"Selected partition: {partition}")
-    #
-    # # Ask the user to set a volume label
-    # label_name = input(f"\nEnter volume label (default: USB_Drive): ")
-    # if not label_name:
-    #     label_name = "USB_Drive"
-    #
-    # print(f"Volume label set to: {label_name}")
-    #
-    # # Ask the user for confirmation
-    # print(f"\nWarning: all data on {disk} will be deleted.")
-    # confirmation = input("To proceed, type 'YES' to confirm: ")
-    # if confirmation not in ("yes", "YES"):
-    #     print("Canceled...")
-    #     input("Press ENTER to return to the menu...")
-    #     return
-    #
-    # print(f"\nConfirmation received")
-    #
-    # # Umount partition
-    # print(f"\nTrying to unmount the partition (if in use)...")
-    # subprocess.run(f'sudo umount {partition} 2>/dev/null', shell=True)
-    # print("Partition unmounted (if it was mounted)")
-    #
-    # # Deleting data
-    # print(f"\nDeleting old data and signatures...")
-    # subprocess.run(f'sudo wipefs -a {disk}', shell=True)
-    # print("Old data deleted")
-    #
-    # # New partition table
-    # print(f"\nDefining new partition table (msdos)...")
-    # subprocess.run(f'sudo parted -s {disk} mklabel msdos', shell=True)
-    # print("Partition table created")
-    #
-    # # Volume format options
-    # print(f"\nSelect the volume format:")
-    # print("1) FAT32 - High compatibility")
-    # print("2) NTFS - Optimized for Windows")
-    # print("3) EXT4 - Linux system")
-    # volume_option = input("Choose an option: ")
-    #
-    # match volume_option:
-    #     case "1":
-    #         print("Partitioning for FAT32 system...")
-    #         subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary fat32 0% 100%', shell=True)
-    #         time.sleep(2)
-    #         print(f"Formatting to FAT32 with the label: {label_name}")
-    #         subprocess.run(f'sudo mkfs.vfat -F 32 -n {label_name} {partition}', shell=True)
-    #     case "2":
-    #         print("Partitioning for NTFS system...")
-    #         subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary ntfs 0% 100%', shell=True)
-    #         time.sleep(2)
-    #         print(f"Formatting to NTFS with the label: {label_name}")
-    #         subprocess.run(f'sudo mkfs.ntfs -f -L {label_name} {partition}', shell=True)
-    #     case "3":
-    #         print("Partitioning for EXT4 system...")
-    #         subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary ext4 0% 100%', shell=True)
-    #         time.sleep(2)
-    #         print(f"Formatting to EXT4 with the label: {label_name}")
-    #         subprocess.run(f'sudo mkfs.ext4 -L {label_name} {partition}', shell=True)
-    #     case _:
-    #         print("Invalid format option selected.")
-    #         input("Press ENTER to return to the menu...")
-    #         return
-    #
-    # print(f"\nFormatting complete. Volume named {label_name}.")
-    # input("Press ENTER to return to the menu...")
+if __name__ == "__main__":
+    format_flashdrive()
