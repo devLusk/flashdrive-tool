@@ -5,14 +5,11 @@ from utils.devices import list_devices
 def format_flashdrive():
     ctk.set_appearance_mode("system")
 
-    app = ctk.CTk()
-    app.title("USB Toolkit")
-    app.geometry("500x460")
-    app.maxsize(width=600, height=350)
-    app.minsize(width=500, height=460)
-
-    def list_available_devices():
-        list_devices()
+    window = ctk.CTkToplevel()
+    window.title("USB Toolkit")
+    window.geometry("500x460")
+    window.maxsize(width=600, height=350)
+    window.minsize(width=500, height=460)
 
     def on_format_click():
         disk = disk_entry.get().lower()
@@ -58,10 +55,10 @@ def format_flashdrive():
             output_label.configure(text=f"Unexpected error: {e}", text_color="red")
 
     # UI Widgets
-    ctk.CTkLabel(app, text="Flash Drive Formatter", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=10)
+    ctk.CTkLabel(window, text="Flash Drive Formatter", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=10)
 
     # Create input frame
-    format_frame = ctk.CTkFrame(app)
+    format_frame = ctk.CTkFrame(window)
     format_frame.pack(fill="x", padx=20, ipady=10)
     format_frame.columnconfigure(0, weight=1)
     format_frame.columnconfigure(1, weight=1)
@@ -96,14 +93,12 @@ def format_flashdrive():
     start_button = ctk.CTkButton(format_frame, text="Format Drive", command=on_format_click)
     start_button.grid(row=6, column=0, columnspan=2, padx=20, pady=10, ipadx=10, ipady=5, sticky="ew")
 
-    devices_button = ctk.CTkButton(format_frame, text="Show Available Disks", command=list_available_devices)
+    devices_button = ctk.CTkButton(format_frame, text="Show Available Disks", command=list_devices)
     devices_button.grid(row=7, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
 
     # Output Frame
-    output_frame = ctk.CTkFrame(app)
+    output_frame = ctk.CTkFrame(window)
     output_frame.pack(fill="x", padx=20, pady=10, ipady=10)
 
     output_label = ctk.CTkLabel(output_frame, text="Status: Waiting for user input...")
     output_label.pack(pady=10)
-
-    app.mainloop()

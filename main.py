@@ -12,27 +12,18 @@ def main():
     app.maxsize(width=600, height=350)
     app.minsize(width=500, height=370)
 
-    def format_drive():
-        format_flashdrive()
-
-    def create_boot():
-        create_bootable()
-
-    def list_device():
-        list_devices()
-
     ctk.CTkLabel(app, text="USB Management Menu", font=ctk.CTkFont(size=24, weight="bold")).pack(pady=20)
 
     btn_frame = ctk.CTkFrame(app)
     btn_frame.pack(fill="x", padx=20)
 
-    btn_format = ctk.CTkButton(btn_frame, text="Format USB Drive", command=format_drive)
+    btn_format = ctk.CTkButton(btn_frame, text="Format USB Drive", command=format_flashdrive)
     btn_format.pack(padx=20, pady=10, ipadx=10, ipady=5, fill="x", expand=True)
 
-    btn_bootable = ctk.CTkButton(btn_frame, text="Create Bootable USB", command=create_boot)
+    btn_bootable = ctk.CTkButton(btn_frame, text="Create Bootable USB", command=create_bootable)
     btn_bootable.pack(padx=20, pady=10, ipadx=10, ipady=5, fill="x", expand=True)
 
-    btn_list = ctk.CTkButton(btn_frame, text="Show Connected Devices", command=list_device)
+    btn_list = ctk.CTkButton(btn_frame, text="Show Connected Devices", command=list_devices)
     btn_list.pack(padx=20, pady=10, ipadx=10, ipady=5, fill="x", expand=True)
 
     btn_exit = ctk.CTkButton(btn_frame, text="Exit", command=app.destroy)
