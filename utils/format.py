@@ -1,14 +1,18 @@
 import customtkinter as ctk
 import subprocess
+from utils.devices import list_devices
 
 def format_flashdrive():
     ctk.set_appearance_mode("system")
 
     app = ctk.CTk()
-    app.title("FORMAT FLASH DRIVE")
+    app.title("USB Toolkit")
     app.geometry("500x460")
     app.maxsize(width=600, height=350)
     app.minsize(width=500, height=460)
+
+    def list_available_devices():
+        list_devices()
 
     def on_format_click():
         disk = disk_entry.get().lower()
@@ -32,8 +36,6 @@ def format_flashdrive():
         partition = f"{disk}{partition}"
 
         try:
-            output_label.configure(text="Preparing to format...", text_color="green")
-
             subprocess.run(f'sudo umount {partition}', shell=True)
             subprocess.run(f'sudo wipefs -a {disk}', shell=True)
             subprocess.run(f'sudo parted -s {disk} mklabel msdos', shell=True)
@@ -94,7 +96,7 @@ def format_flashdrive():
     start_button = ctk.CTkButton(format_frame, text="Format Drive", command=on_format_click)
     start_button.grid(row=6, column=0, columnspan=2, padx=20, pady=10, ipadx=10, ipady=5, sticky="ew")
 
-    devices_button = ctk.CTkButton(format_frame, text="Show Available Disks")
+    devices_button = ctk.CTkButton(format_frame, text="Show Available Disks", command=list_available_devices)
     devices_button.grid(row=7, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
 
     # Output Frame
@@ -105,6 +107,3 @@ def format_flashdrive():
     output_label.pack(pady=10)
 
     app.mainloop()
-
-if __name__ == "__main__":
-    format_flashdrive()
