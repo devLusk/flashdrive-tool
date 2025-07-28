@@ -64,29 +64,29 @@ def format_flashdrive():
     format_frame.columnconfigure(1, weight=1)
 
     # Disk Identifier
-    ctk.CTkLabel(format_frame, text="Disk Identifier (e.g., sda):").grid(row=0, column=0, padx=20, pady=5)
-    disk_entry = ctk.CTkEntry(format_frame, placeholder_text="Example: sda")
+    ctk.CTkLabel(format_frame, text="Disk:").grid(row=0, column=0, padx=20, pady=5)
+    disk_entry = ctk.CTkEntry(format_frame, placeholder_text="e.g., sda")
     disk_entry.grid(row=1, column=0, padx=20, ipadx=10, ipady=5, sticky="ew")
 
     # Partition Number
-    ctk.CTkLabel(format_frame, text="Partition Number (e.g., 1):").grid(row=0, column=1, padx=20, pady=5)
-    partition_entry = ctk.CTkEntry(format_frame, placeholder_text="E.G. 1")
+    ctk.CTkLabel(format_frame, text="Partition:").grid(row=0, column=1, padx=20, pady=5)
+    partition_entry = ctk.CTkEntry(format_frame, placeholder_text="e.g., 1")
     partition_entry.grid(row=1, column=1, padx=20, ipadx=10, ipady=5, sticky="ew")
 
     # Volume Label
-    ctk.CTkLabel(format_frame, text="Volume Label (optional):").grid(row=2, column=0, padx=20, pady=5)
+    ctk.CTkLabel(format_frame, text="Label (optional):").grid(row=2, column=0, padx=20, pady=5)
     label_entry = ctk.CTkEntry(format_frame, placeholder_text="Default: USB_Drive")
     label_entry.grid(row=3, column=0, padx=20, ipadx=10, ipady=5, sticky="ew")
 
     # File System Option
-    ctk.CTkLabel(format_frame, text="File System:").grid(row=2, column=1, padx=20, pady=5)
+    ctk.CTkLabel(format_frame, text="File system:").grid(row=2, column=1, padx=20, pady=5)
     format_volume = ctk.CTkComboBox(format_frame, values=["FAT32", "NTFS", "EXT4"])
     format_volume.set("FAT32")
     format_volume.grid(row=3, column=1, padx=20, ipadx=10, ipady=5, sticky="ew")
 
     # Confirmation
-    ctk.CTkLabel(format_frame, text="Confirmation (type YES to proceed):").grid(row=4, column=0, columnspan=2, padx=20, pady=5)
-    confirm_entry = ctk.CTkEntry(format_frame, placeholder_text="Type YES to confirm")
+    ctk.CTkLabel(format_frame, text="Type YES to confirm").grid(row=4, column=0, columnspan=2, padx=20, pady=5)
+    confirm_entry = ctk.CTkEntry(format_frame, placeholder_text="YES")
     confirm_entry.grid(row=5, column=0, columnspan=2, padx=20, ipadx=10, ipady=5, sticky="ew")
 
     # Action Buttons
