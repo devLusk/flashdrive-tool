@@ -41,7 +41,7 @@ This Python application provides a command-line interface for formatting USB fla
    ```
 2. Run the main script:
    ```bash
-   python3 main.py
+   ./run.sh
    ```
 3. Follow the interactive menu to:
    - **Option 1**: Format a USB drive by selecting a disk, partition, file system, and volume label.
@@ -58,34 +58,6 @@ This Python application provides a command-line interface for formatting USB fla
   - FAT32: High compatibility across systems.
   - NTFS: Optimized for Windows.
   - EXT4: Preferred for Linux systems.
-
-## Example
-```bash
-$ python3 main.py
-=== MENU ===
-1) Format flash drive
-2) Create bootable flash drive
-3) List devices
-4) Exit
-Choose an option: 1
-
-Detected disks and partitions:
-NAME   SIZE TYPE MOUNTPOINT
-sda    14.9G disk
-└─sda1 14.9G part /mnt/usb
-
-Enter the disk identifier (e.g. sda): sda
-Selected device: /dev/sda
-Enter the partition number: 1
-Selected partition: /dev/sda1
-Enter volume label (default: USB_Drive): MyUSB
-Volume label set to: MyUSB
-Warning: all data on /dev/sda will be deleted.
-To proceed, type 'YES' to confirm: YES
-...
-Formatting complete. Volume named MyUSB.
-Press ENTER to return to the menu...
-```
 
 ## Limitations
 - The script is Linux-specific due to its reliance on `lsblk`, `parted`, `wipefs`, and `dd`.

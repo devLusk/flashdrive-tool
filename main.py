@@ -9,7 +9,7 @@ def main():
     app = ctk.CTk()
     app.title("USB Toolkit")
     app.geometry("500x370")
-    app.maxsize(width=600, height=350)
+    app.maxsize(width=800, height=350)
     app.minsize(width=500, height=370)
 
     ctk.CTkLabel(app, text="USB Management Menu", font=ctk.CTkFont(size=24, weight="bold")).pack(pady=20)

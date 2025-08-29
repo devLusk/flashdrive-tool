@@ -33,21 +33,35 @@ def format_flashdrive():
         partition = f"{disk}{partition}"
 
         try:
+            output_label.configure(text="Unmounting partition...", text_color="orange")
+            window.update_idletasks()
             subprocess.run(f'sudo umount {partition}', shell=True)
+
+            output_label.configure(text="Wiping filesystem...", text_color="orange")
+            window.update_idletasks()
             subprocess.run(f'sudo wipefs -a {disk}', shell=True)
+
+            output_label.configure(text="Creating partition table...", text_color="orange")
+            window.update_idletasks()
             subprocess.run(f'sudo parted -s {disk} mklabel msdos', shell=True)
 
             if volume == "fat32":
+                output_label.configure(text="Creating FAT32 partition...", text_color="orange")
+                window.update_idletasks()
                 subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary fat32 0% 100%', shell=True)
                 subprocess.run(f'sudo mkfs.vfat -F 32 -n {label} {partition}', shell=True)
             elif volume == "ntfs":
+                output_label.configure(text="Creating NTFS partition...", text_color="orange")
+                window.update_idletasks()
                 subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary ntfs 0% 100%', shell=True)
                 subprocess.run(f'sudo mkfs.ntfs -f -L {label} {partition}', shell=True)
             elif volume == "ext4":
+                output_label.configure(text="Creating EXT4 partition...", text_color="orange")
+                window.update_idletasks()
                 subprocess.run(f'sudo parted -s -a optimal {disk} mkpart primary ext4 0% 100%', shell=True)
                 subprocess.run(f'sudo mkfs.ext4 -L {label} {partition}', shell=True)
 
-            output_label.configure(text="Formatting complete.", text_color="green")
+            output_label.configure(text="Formatting complete", text_color="green")
 
         except subprocess.CalledProcessError as e:
             output_label.configure(text=f"Command failed: {e}", text_color="red")

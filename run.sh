@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo .venv/bin/python main.py
+sudo venv/bin/python main.py
