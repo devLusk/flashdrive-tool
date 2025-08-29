@@ -1,6 +1,6 @@
 # USB Formatter and Bootable Creator
 
-![USB Formatter](image.png)
+![USB Formatter](images/image.png)
 
 This Python application provides a command-line interface for formatting USB flash drives and creating bootable USB drives from ISO files. It is designed to work on Linux systems and requires administrative privileges for certain operations.
 
