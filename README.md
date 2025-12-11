@@ -2,10 +2,10 @@
 
 ![USB Formatter](images/image.png)
 
-This Python application provides a command-line interface for formatting USB flash drives and creating bootable USB drives from ISO files. It is designed to work on Linux systems and requires administrative privileges for certain operations.
+This Python application provides a graphical interface using CustomTkinter for formatting USB flash drives and creating bootable USB drives from ISO files on Linux systems. Administrative privileges are required for certain operations.
 
 ## Features
-- **List Devices**: Displays all detected disks and partitions using `lsblk`.
+- **List Devices**: Displays all detected disks and partitions directly in the GUI.
 - **Format Flash Drive**: Formats a USB drive with a choice of FAT32, NTFS, or EXT4 file systems, allowing the user to set a custom volume label.
 - **Create Bootable USB**: Writes an ISO image to a USB drive to create a bootable device using the `dd` command.
 
@@ -41,11 +41,11 @@ This Python application provides a command-line interface for formatting USB fla
    ```bash
    cd path/to/project_directory
    ```
-2. Run the main script:
+2. Run the main script to open the GUI:
    ```bash
    ./run.sh
    ```
-3. Follow the interactive menu to:
+3. Use the graphical interface to:
    - **Option 1**: Format a USB drive by selecting a disk, partition, file system, and volume label.
    - **Option 2**: Create a bootable USB by providing the path to an ISO file and selecting a disk.
    - **Option 3**: List all detected disks and partitions.
