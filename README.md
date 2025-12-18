@@ -1,70 +1,156 @@
-# USB Formatter and Bootable Creator
+# USB Formatter & Bootable USB Creator
 
 ![USB Formatter](images/image.png)
 
-This Python application provides a graphical interface using CustomTkinter for formatting USB flash drives and creating bootable USB drives from ISO files on Linux systems. Administrative privileges are required for certain operations.
+A Linux desktop application written in **Python** using **CustomTkinter** that allows you to safely **format USB flash drives** and **create bootable USB devices from ISO files**.
 
-## Features
-- **List Devices**: Displays all detected disks and partitions directly in the GUI.
-- **Format Flash Drive**: Formats a USB drive with a choice of FAT32, NTFS, or EXT4 file systems, allowing the user to set a custom volume label.
-- **Create Bootable USB**: Writes an ISO image to a USB drive to create a bootable device using the `dd` command.
+This tool is intended for **local desktop use** and performs low-level disk operations, therefore **administrator privileges are required**.
 
-## Prerequisites
-- **Python 3.x**: Ensure Python is installed on your system.
-- **Linux System**: The script is designed for Linux environments.
-- **Required Packages**:
-  - `lsblk` for listing devices.
-  - `parted` for creating partition tables.
-  - `wipefs` for wiping disk signatures.
-  - `mkfs.vfat`, `mkfs.ntfs`, `mkfs.ext4` for formatting in FAT32, NTFS, or EXT4.
-- **Administrative Privileges**: The script uses `sudo` for operations that modify disk data.
+---
 
-## Installation
-1. Clone or download the repository to your local machine.
-2. Ensure the required Linux packages are installed:
-   ```bash
-   sudo apt update
-   sudo apt install parted ntfs-3g dosfstools e2fsprogs
-   ```
-3. Place the scripts in a directory with the following structure:
-   ```
-   project_directory/
-   ├── main.py
-   └── utils/
-       ├── bootable.py
-       ├── devices.py
-       └── format.py
-   ```
+## ✨ Features
 
-## Usage
-1. Navigate to the project directory:
-   ```bash
-   cd path/to/project_directory
-   ```
-2. Run the main script to open the GUI:
-   ```bash
-   ./run.sh
-   ```
-3. Use the graphical interface to:
-   - **Option 1**: Format a USB drive by selecting a disk, partition, file system, and volume label.
-   - **Option 2**: Create a bootable USB by providing the path to an ISO file and selecting a disk.
-   - **Option 3**: List all detected disks and partitions.
-   - **Option 4**: Exit the program.
+* **Graphical Interface (GUI)** built with CustomTkinter
+* **Automatic device detection** using `lsblk`
+* **Format USB drives** with the following file systems:
 
-## Important Notes
-- **Data Loss Warning**: Formatting or creating a bootable USB will erase all data on the selected disk. Always double-check the disk identifier before confirming operations.
-- **Safety Checks**: The script requires explicit confirmation (`YES`) before performing destructive operations.
-- **ISO File**: Ensure the ISO file path is valid when creating a bootable USB.
-- **Partition Number**: When formatting, specify the partition number (e.g., `1` for `/dev/sda1`).
-- **File System Options**:
-  - FAT32: High compatibility across systems.
-  - NTFS: Optimized for Windows.
-  - EXT4: Preferred for Linux systems.
+  * FAT32 (maximum compatibility)
+  * NTFS (Windows-friendly)
+  * EXT4 (Linux-native)
+* **Custom volume label** support
+* **Create bootable USB drives** from ISO images using `dd`
+* **Safety confirmations** before destructive operations
 
-## Limitations
-- The script is Linux-specific due to its reliance on `lsblk`, `parted`, `wipefs`, and `dd`.
-- No support for non-Linux systems or advanced partition schemes.
-- Requires manual input of disk identifiers and partition numbers, which can be error-prone if the user is not familiar with their system’s disk layout.
+---
 
-## Contributing
-Feel free to submit issues or pull requests to improve the script, such as adding error handling, support for other operating systems, or additional features.
+## ⚠️ Important Warning
+
+This application can **permanently erase data** on storage devices.
+
+* Always double-check the selected device
+* Never select your system disk
+* You are fully responsible for any data loss
+
+---
+
+## 🖥️ Requirements
+
+### Operating System
+
+* Linux (Debian/Ubuntu-based distributions recommended)
+
+### System Packages
+
+The following packages are required and will be installed automatically by the setup script:
+
+* `python3`
+* `python3-venv`
+* `python3-tk`
+* `parted`
+* `lsblk`
+* `wipefs`
+* `dosfstools`
+* `ntfs-3g`
+* `e2fsprogs`
+
+### Python
+
+* Python **3.8+**
+
+---
+
+## 📦 Installation
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/devLusk/flashdrive-tool.git
+cd flashdrive-tool
+```
+
+### 2️⃣ Make the launcher executable
+
+```bash
+chmod +x run.sh
+```
+
+That’s it — no manual dependency installation required.
+
+---
+
+## ▶️ Usage
+
+Run the application using:
+
+```bash
+./run.sh
+```
+
+What the script does:
+
+1. Explains what will be installed and executed
+2. Requests user confirmation
+3. Requests administrator (sudo) privileges
+4. Installs required system packages (if missing)
+5. Creates a Python virtual environment (`venv`)
+6. Installs Python dependencies from `requirements.txt`
+7. Launches the graphical application
+
+---
+
+## 🧭 Application Overview
+
+From the GUI you can:
+
+### 🔹 Format USB Drive
+
+* Select a removable device
+* Choose a file system (FAT32 / NTFS / EXT4)
+* Set a volume label
+* Confirm before formatting
+
+### 🔹 Create Bootable USB
+
+* Select an ISO image
+* Choose a target USB device
+* Write the ISO using `dd`
+* Confirmation required before writing
+
+---
+
+## 🛡️ Safety Measures
+
+* Explicit confirmation dialogs before destructive actions
+* Device listing shows full paths (e.g. `/dev/sdb`)
+* Designed to avoid accidental system disk selection
+
+---
+
+## ❌ Limitations
+
+* Linux only
+* Requires administrator privileges
+* No support for Windows or macOS
+* Uses `dd` for ISO writing
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+You can help by:
+
+* Improving safety checks
+* Adding progress indicators
+* Enhancing UI/UX
+* Improving device detection
+
+Feel free to open issues or submit pull requests.
+
+---
+
+## 📄 License
+
+This project is provided as-is for educational and personal use.
+Use at your own risk.
